@@ -2,9 +2,6 @@ stages:
   - build
 
 variables:
-  DOCKER_TLS_CERTDIR: ""
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay2
   ADDITIONAL_PACKAGES: ""
   TERMUX_APP__PACKAGE_NAME: "com.termux"
   TERMUX_APP_TYPE: "f-droid"
@@ -25,30 +22,14 @@ variables:
 
 build:
   stage: build
-  image: docker:latest
-  services:
-    - docker:dind
+  image: ubuntu:24.04
   timeout: 6h
+  before_script:
+    - apt-get update && apt-get install -y docker.io
+    - docker --version
   script:
     - echo "=== 开始编译 Termux ==="
     - ./build-termux.sh
-        ${ADDITIONAL_PACKAGES:+--add $ADDITIONAL_PACKAGES}
-        ${TERMUX_APP__PACKAGE_NAME:+--name $TERMUX_APP__PACKAGE_NAME}
-        ${TERMUX_APP_TYPE:+--type $TERMUX_APP_TYPE}
-        ${BOOTSTRAP_ARCHITECTURES:+--architectures $BOOTSTRAP_ARCHITECTURES}
-        ${DISABLE_BOOTSTRAP_SECOND_STAGE:+--disable-bootstrap-second-stage}
-        ${ENABLE_SSH_SERVER:+--enable-ssh-server}
-        ${DISABLE_BOOTSTRAP:+--disable-bootstrap}
-        ${DISABLE_TERMINAL:+--disable-terminal}
-        ${DISABLE_TASKER:+--disable-tasker}
-        ${DISABLE_FLOAT:+--disable-float}
-        ${DISABLE_WIDGET:+--disable-widget}
-        ${DISABLE_API:+--disable-api}
-        ${DISABLE_BOOT:+--disable-boot}
-        ${DISABLE_STYLING:+--disable-styling}
-        ${DISABLE_GUI:+--disable-gui}
-        ${DISABLE_X11:+--disable-x11}
-        ${PLUGIN:+--plugin $PLUGIN}
   artifacts:
     paths:
       - "*.apk"
