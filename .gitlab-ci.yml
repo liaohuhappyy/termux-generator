@@ -1,38 +1,9 @@
 stages:
   - build
 
-variables:
-  ADDITIONAL_PACKAGES: ""
-  TERMUX_APP__PACKAGE_NAME: "com.termux"
-  TERMUX_APP_TYPE: "f-droid"
-  BOOTSTRAP_ARCHITECTURES: ""
-  DISABLE_BOOTSTRAP_SECOND_STAGE: ""
-  ENABLE_SSH_SERVER: ""
-  DISABLE_BOOTSTRAP: ""
-  DISABLE_TERMINAL: ""
-  DISABLE_TASKER: ""
-  DISABLE_FLOAT: ""
-  DISABLE_WIDGET: ""
-  DISABLE_API: ""
-  DISABLE_BOOT: ""
-  DISABLE_STYLING: ""
-  DISABLE_GUI: ""
-  DISABLE_X11: ""
-  PLUGIN: ""
-
-build:
+test:
   stage: build
-  image: ubuntu:24.04
-  timeout: 6h
-  before_script:
-    - apt-get update && apt-get install -y docker.io
-    - docker --version
   script:
-    - echo "=== 开始编译 Termux ==="
-    - ./build-termux.sh
-  artifacts:
-    paths:
-      - "*.apk"
-      - "*.zip"
-      - "*.xz"
-    expire_in: 7 days
+    - echo "Hello from GitLab CI!"
+    - pwd
+    - ls -la
