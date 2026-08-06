@@ -1,146 +1,93 @@
 # termux-generator
 
-This script builds a [termux/termux-app](https://github.com/termux/termux-app) or [termux-play-store/termux-apps/termux-app](https://github.com/termux-play-store/termux-apps/tree/main/termux-app) from source, but allows changing the package name from `com.termux` to anything else with a single command.
-
-## Building Termux in GitHub Actions
-
-1. Fork the repository:
-
-<img width="189" height="43" alt="image" src="https://github.com/user-attachments/assets/7aa63b58-b8d5-4b30-957b-fd041bee003d" />
-
-2. Click the "Actions" tab and enable GitHub Actions:
-
-<img width="953" height="407" alt="image" src="https://github.com/user-attachments/assets/76561301-61bd-4f58-8511-38d4486e26ac" />
-
-3. Click the "Generate Termux application" workflow, then click the "Run workflow" button and type your desired settings:
-
-<img width="450" height="810" alt="image" src="https://github.com/user-attachments/assets/7b914a69-7654-4150-8e68-4086a10ba3fd" />
-
-4. Click the "Run workflow" button, then wait for your build to complete. If the build is successful, there will be an artifact available to download containing all possible Termux APKs for the combination of settings you selected:
-
-<img width="1148" height="250" alt="image" src="https://github.com/user-attachments/assets/7bbc8338-1c9e-4a34-966f-87a65cadc471" />
 
 
-## Building Termux locally
+## Getting started
 
-### Dependencies
+To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
-- Docker
-- Android SDK
-- OpenJDK 17
-- `git`
-- `patch`
-- `bash`
+Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
 
-#### Common Dependencies
-```bash
-sudo apt update
-sudo apt install -y openjdk-17-jdk git patch
+## Add your files
+
+* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
+* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+
+```
+cd existing_repo
+git remote add origin https://gitlab.com/liaohuhappyy/termux-generator.git
+git branch -M main
+git push -uf origin main
 ```
 
-#### Android SDK (Ubuntu 20.04 and 22.04)
+## Integrate with your tools
 
-```bash
-sudo apt install -y android-sdk sdkmanager
-```
+* [Set up project integrations](https://gitlab.com/liaohuhappyy/termux-generator/-/settings/integrations)
 
-#### Android SDK (Ubuntu 24.04 and 24.10)
+## Collaborate with your team
 
-```bash
-sudo apt install -y google-android-cmdline-tools-13.0-installer
-```
+* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
+* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
+* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
+* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
+* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
 
-#### Android SDK common setup
+## Test and Deploy
 
-```bash
-echo "export ANDROID_SDK_ROOT=/usr/lib/android-sdk" >> ~/.bashrc && . ~/.bashrc
-sudo chown -R $(whoami) $ANDROID_SDK_ROOT
-yes | sdkmanager --licenses
-```
+Use the built-in continuous integration in GitLab.
 
-#### Docker 
+* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
+* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
+* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
+* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
+* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
 
-> [!NOTE]
-> `docker.io` by Debian/Ubuntu or `docker-ce` by https://docker.com are both acceptable here. This example shows installing `docker.io` - to use Docker CE instead, visit the [docker.com docs for Docker CE](https://docs.docker.com/engine/install/)
+***
 
-```bash
-sudo apt install -y docker.io
-sudo usermod -aG docker $(whoami)
-```
+# Editing this README
 
-> [!NOTE]
-> Restart your computer or otherwise apply the group change. For me, logging out and logging in was insufficient
+When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
 
-```bash
-sudo reboot
-```
+## Suggestions for a good README
 
-### Using termux-generator locally
+Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
 
-#### Example: build Termux with the location changed and some popular packages preinstalled
+## Name
+Choose a self-explaining name for your project.
 
-> [!IMPORTANT]
-> Best-case typical time to compile the below example with added packages and only the aarch64 bootstrap: **3 hours**
+## Description
+Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
 
-```bash
-git clone https://github.com/robertkirkman/termux-generator.git
-cd termux-generator
-./build-termux.sh --name a.copy.of.termux.with.the.location.changed \
-    --add clang,make,pkg-config,autoconf,automake,bc,bison,cmake,flex,libtool,m4,git,python-pip,proot-distro \
-    --architectures aarch64
-```
+## Badges
+On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
 
-> [!IMPORTANT]
-> Running the command a second time will delete all the modified files and start over. Use `--dirty` if you are troubleshooting.
+## Visuals
+Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
 
+## Installation
+Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
-#### Example: build Termux with SSH server enabled by default and install it through ADB
+## Usage
+Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-> [!NOTE]
-> - This technique can be used to bootstrap from ADB access into full SSH access through Termux, without any access to a display or touchscreen.
-> - This might be useful on devices that have **no screen or a broken screen**.
-> - If you install Termux:Boot or build with `--type play-store` (which comes with Termux:Boot already built into the same APK as the main Google Play Termux APK), then the SSH server will also autolaunch every time the device is first unlocked after rebooting.
-> - `adb forward tcp:8022 tcp:8022` is only necessary for:
->   - If you prefer to use SSH through USB connection and/or ADB connection
->   - If your device doesn't have network connectivity other than ADB
->   - If your ADB connection is itself being forwarded through a tunnel or firewall that you don't have set up for SSH
+## Support
+Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
 
-```bash
-git clone https://github.com/robertkirkman/termux-generator.git
-cd termux-generator
-./build-termux.sh --enable-ssh-server
-adb install com.termux-f-droid-termux-app_apt-android-7-debug_universal.apk
-adb install com.termux-f-droid-termux-boot-app_v0.8.1+debug.apk
-adb shell am start -n com.termux.boot/.BootActivity
-adb shell am start -n com.termux/.app.TermuxActivity
-adb forward tcp:8022 tcp:8022 # use only if needed
-ssh -p 8022 localhost # if not using 'adb forward', replace 'localhost' with device's LAN IP
-# default password is 'changeme'
-passwd # change the default password
-```
+## Roadmap
+If you have ideas for releases in the future, it is a good idea to list them in the README.
 
-#### Example: build Termux with the location changed and XFCE preinstalled
+## Contributing
+State if you are open to contributions and what your requirements are for accepting them.
 
-> [!TIP]
-> `--type play-store` is compatible with Termux:X11, but unlike `--type f-droid`, it doesn't currently have a second-stage bootstrap, so if using `--type play-store` with XFCE, it might be necessary to run some commands to grant executable permission manually before launching XFCE, like these:
-> 
-> ```
-> chmod +x $PREFIX/lib/xfce4/xfconf/xfconfd
-> chmod +x $PREFIX/lib/xfce4/session/xfsm-shutdown-helper
-> chmod +x $PREFIX/lib/xfce4/panel/migrate
-> chmod +x $PREFIX/lib/xfce4/notifyd/xfce4-notifyd
-> ```
+For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
 
-```bash
-git clone https://github.com/robertkirkman/termux-generator.git
-cd termux-generator
-./build-termux.sh  --add valac,thunar,xfce4-panel,xfce4-session,xfce4-settings,xfconf,xfwm4,xfce4-notifyd,xfce4-terminal,xfdesktop,xfce4 \
-                   --architectures aarch64,x86_64 \
-                   --name two.termux
-```
+You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
-- After installing both the main app and the X11 app that appear after building, use this command to launch XFCE:
+## Authors and acknowledgment
+Show your appreciation to those who have contributed to the project.
 
-```bash
-termux-x11 -xstartup xfce4-session &
-```
+## License
+For open source projects, say how it is licensed.
+
+## Project status
+If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
