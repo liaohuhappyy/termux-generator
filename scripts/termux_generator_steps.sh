@@ -174,6 +174,12 @@ build_bootstraps() {
         sed -i "s|https://codeberg.org/dnkl/foot/archive/1.27.0.tar.gz|$FOOT_MIRROR_URL|g" "$f"
         echo "[*] Patched $f to use GitHub foot mirror"
     done
+
+    # Fix Apache 下载服务器删旧版本：用 archive 镜像替代 downloads
+    find packages/ -name "*.sh" -exec grep -l "downloads.apache.org/apr" {} \; 2>/dev/null | while read f; do
+        sed -i 's|https://downloads.apache.org/apr/|https://archive.apache.org/dist/apr/|g' "$f"
+        echo "[*] Patched $f to use Apache archive mirror"
+    done
     # 也 patch build-package.sh 里的 termux_download 函数（如果有的话）
     if [ -f scripts/build/termux_download.sh ]; then
         sed -i "s|https://codeberg.org/dnkl/foot/archive/1.27.0.tar.gz|$FOOT_MIRROR_URL|g" scripts/build/termux_download.sh
