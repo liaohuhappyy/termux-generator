@@ -2,7 +2,9 @@ stages:
   - build
 
 variables:
-  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
   ADDITIONAL_PACKAGES: ""
   TERMUX_APP__PACKAGE_NAME: "com.termux"
   TERMUX_APP_TYPE: "f-droid"
