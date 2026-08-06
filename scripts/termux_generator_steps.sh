@@ -168,6 +168,12 @@ move_termux_x11_deb() {
 build_bootstraps() {
     pushd termux-packages-main
 
+    # Fix codeberg.org 下载超时：patch apt build.sh 增加重试和超时
+    if [ -f packages/apt/build.sh ]; then
+        sed -i 's|curl -L|curl -L --connect-timeout 60 --retry 3 --retry-delay 10|g' packages/apt/build.sh
+        echo "[*] Patched apt/build.sh for codeberg.org download timeout"
+    fi
+
     local bootstrap_script_args=""
 
     if [ -n "$ENABLE_SSH_SERVER" ]; then
