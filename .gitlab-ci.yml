@@ -28,8 +28,6 @@ build:
   image: docker:latest
   services:
     - docker:dind
-  tags:
-    - docker
   timeout: 6h
   script:
     - echo "=== 开始编译 Termux ==="
