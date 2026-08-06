@@ -168,10 +168,15 @@ move_termux_x11_deb() {
 build_bootstraps() {
     pushd termux-packages-main
 
-    # Fix codeberg.org 下载超时：patch apt build.sh 增加重试和超时
-    if [ -f packages/apt/build.sh ]; then
-        sed -i 's|curl -L|curl -L --connect-timeout 60 --retry 3 --retry-delay 10|g' packages/apt/build.sh
-        echo "[*] Patched apt/build.sh for codeberg.org download timeout"
+    # Fix codeberg.org 下载超时：用 GitHub mirror 替代
+    local FOOT_MIRROR_URL="https://github.com/liaohuhappyy/termux-generator/releases/download/foot-mirror/foot-1.27.0.tar.gz"
+    find packages/ -name "*.sh" -exec grep -l "codeberg.org/dnkl/foot" {} \; 2>/dev/null | while read f; do
+        sed -i "s|https://codeberg.org/dnkl/foot/archive/1.27.0.tar.gz|$FOOT_MIRROR_URL|g" "$f"
+        echo "[*] Patched $f to use GitHub foot mirror"
+    done
+    # 也 patch build-package.sh 里的 termux_download 函数（如果有的话）
+    if [ -f scripts/build/termux_download.sh ]; then
+        sed -i "s|https://codeberg.org/dnkl/foot/archive/1.27.0.tar.gz|$FOOT_MIRROR_URL|g" scripts/build/termux_download.sh
     fi
 
     local bootstrap_script_args=""
