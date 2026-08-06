@@ -81,6 +81,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    timeout-minutes: 480
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -89,8 +90,7 @@ jobs:
         run: echo "ADDITIONAL_PACKAGES=--add ${{ github.event.inputs.add }}" >> $GITHUB_ENV
       - name: Set --name
         if: "${{ github.event.inputs.name != '' }}"
-        run: |
-          echo "TERMUX_APP__PACKAGE_NAME=${{ github.event.inputs.name }}" >> $GITHUB_ENV
+        run: echo "TERMUX_APP__PACKAGE_NAME=--name ${{ github.event.inputs.name }}" >> $GITHUB_ENV
       - name: Set --type
         if: "${{ github.event.inputs.type != '' }}"
         run: echo "TERMUX_APP_TYPE=--type ${{ github.event.inputs.type }}" >> $GITHUB_ENV

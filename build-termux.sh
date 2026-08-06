@@ -5,7 +5,7 @@ set -e -u -o pipefail
 cd "$(realpath "$(dirname "$0")")"
 
 TERMUX_GENERATOR_HOME="$(pwd)"
-TERMUX_APP__PACKAGE_NAME="com.termux"
+TERMUX_APP__PACKAGE_NAME="${TERMUX_APP__PACKAGE_NAME:-com.termux}"
 TERMUX_APP_TYPE="f-droid"
 DO_NOT_CLEAN=""
 TERMUX_GENERATOR_PLUGIN=""
